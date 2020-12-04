@@ -48,7 +48,7 @@ def load_input_into_list():
     :return: The list of lists for our input
     :rtype: list
     """
-    return [line.replace('-', ' ').replace(':', '').split(' ') for line in open("inputs/day2_01.txt", "r").read().splitlines()]
+    return [line.replace('-', ' ').replace(':', '').split(' ') for line in open("inputs/day2_input.txt", "r").read().splitlines()]
 
 
 def get_part_01_answer():
