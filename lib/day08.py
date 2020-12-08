@@ -108,24 +108,19 @@ def perform_operation(input_list, ind, acc, visited_inds):
         print(acc)
         return None
 
-    before_count = len(visited_inds)
-    visited_inds.add(ind)
-    after_count = len(visited_inds)
-    if after_count == before_count:
+    if ind in visited_inds:
         return acc
+    visited_inds.add(ind)
 
-    number_jmp = 1
     if operation == 'acc':
         acc += int(number)
+        ind += 1
     elif operation == 'jmp':
-        number_jmp = int(number)
+        ind += int(number)
     elif operation == 'nop':
-        pass
+        ind += 1
 
-    if ind + number_jmp == len(input_list) + 1:
-        return acc
-
-    return perform_operation(input_list, ind+number_jmp, acc, visited_inds)
+    return perform_operation(input_list, ind, acc, visited_inds)
 
 
 def fix_program(input_list):
