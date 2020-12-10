@@ -90,6 +90,7 @@ these are 15 and 47, producing 62.
 What is the encryption weakness in your XMAS-encrypted list of numbers?
 """
 from itertools import combinations
+import time
 
 PREAMBLE_LENGTH = 25
 
@@ -120,6 +121,9 @@ def part02(invalid_num):
                 return min(contiguous_set) + max(contiguous_set)
 
 
+t1 = time.perf_counter()
 invalid_number = part01().pop()
 print(invalid_number)
 print(part02(invalid_number))
+t2 = time.perf_counter()
+print(t2-t1)
