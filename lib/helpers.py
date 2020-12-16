@@ -1,6 +1,9 @@
 from time import perf_counter
 from functools import wraps
 
+"""
+Courtesy of Chris Cunningham on the Tech-Art slack
+"""
 
 def timer(func):
     @wraps(func)
