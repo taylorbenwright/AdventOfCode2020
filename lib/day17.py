@@ -2,15 +2,22 @@
 
 """
 
+from itertools import product
 from lib.helpers import timer
 
 INACTIVE = '.'
 ACTIVE = '#'
 
-infinite_grid = {(x, y, 0, 0): state for y, line in enumerate(open("inputs/day17_input.txt", "r").read().splitlines()) for x, state in enumerate(line)}
+infinite_grid = {(x, y, 0, 0): int(state == ACTIVE) for y, line in enumerate(open("inputs/day17_input.txt", "r").read().splitlines()) for x, state in enumerate(line)}
 
 
-def get_neighbor_cube_coords(coord):
+def get_neighbor_cube_coords(coord, use_w=False):
+    nearest_neighbor = set(tuple(sum(t) for prod in product((-1, 0, 1), repeat=3) if prod != (0, 0, 0) for t in zip(coord, prod)))
+    # nearest_neighbors = []
+    # for prod in product((-1, 0, 1), repeat=3):
+    #     if prod != (0, 0, 0):
+    #         nearest_neighbors.append(tuple(sum(t) for t in zip(coord, prod)))
+    #
     xcoord, ycoord, zcoord, _ = coord
     neighbor_coords = set()
     for x in range(-1, 2):
@@ -42,10 +49,11 @@ def expand_grid(grid, iteration_to_expand_to):
         for y_range in range(-iteration_to_expand_to, y+1):
             for z_range in range(-iteration_to_expand_to, iteration_to_expand_to+1):
                 if (x_range, y_range, z_range, 0) not in new_grid:
-                    new_grid[(x_range, y_range, z_range, 0)] = INACTIVE
+                    new_grid[(x_range, y_range, z_range, 0)] = 0
     return new_grid
 
 
+@timer
 def expand_grid_w(grid, iteration_to_expand_to):
     new_grid = grid.copy()
     x = y = 7 + iteration_to_expand_to
@@ -54,7 +62,7 @@ def expand_grid_w(grid, iteration_to_expand_to):
             for z_range in range(-iteration_to_expand_to, iteration_to_expand_to+1):
                 for w_range in range(-iteration_to_expand_to, iteration_to_expand_to+1):
                     if (x_range, y_range, z_range, w_range) not in new_grid:
-                        new_grid[(x_range, y_range, z_range, w_range)] = INACTIVE
+                        new_grid[(x_range, y_range, z_range, w_range)] = 0
     return new_grid
 
 
@@ -68,18 +76,18 @@ def solve(input_grid, cycles, use_w=False):
         buffer_grid = current_grid.copy()
         for coord, state in current_grid.items():
             neighbor_coords = get_neighbor_cube_coords(coord) if not use_w else get_neighbor_cube_coords_w(coord)
-            neighbor_states = [current_grid.get(coords, INACTIVE) for coords in neighbor_coords]
-            if state == INACTIVE and neighbor_states.count(ACTIVE) == 3:
-                buffer_grid[coord] = ACTIVE
-            elif state == ACTIVE and neighbor_states.count(ACTIVE) not in [2, 3]:
-                buffer_grid[coord] = INACTIVE
+            neighbor_states = sum([current_grid.get(coords, 0) for coords in neighbor_coords])
+            if not state and neighbor_states == 3:
+                buffer_grid[coord] = 1
+            elif state and neighbor_states not in [2, 3]:
+                buffer_grid[coord] = 0
         current_grid = buffer_grid.copy()
         itr += 1
     return current_grid
 
 
 part1_grid = solve(infinite_grid, 6)
-print(list(part1_grid.values()).count(ACTIVE))
+print(sum(part1_grid.values()))
 
-part2_grid = solve(infinite_grid, 6, use_w=True)
-print(list(part2_grid.values()).count(ACTIVE))
+# part2_grid = solve(infinite_grid, 6, use_w=True)
+# print(sum(part2_grid.values()))
