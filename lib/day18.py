@@ -2,6 +2,8 @@
 
 """
 
+from lib.helpers import timer
+
 eq_list = [line for line in open("inputs/day18_input.txt", "r").read().splitlines()]
 
 
@@ -23,6 +25,7 @@ def solve_equation(substring, part_2=False):
     return ss[0]
 
 
+@timer
 def solve_equations(equation_list, part_2=False):
     itr = 0
     for equation in equation_list:
