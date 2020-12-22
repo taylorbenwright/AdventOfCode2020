@@ -2,8 +2,6 @@
 
 """
 
-from collections import defaultdict
-
 player1, player2 = [line.split(':')[1].split('\n')[1:] for line in open("inputs/day22_input.txt", "r").read().split('\n\n')]
 
 player1 = [int(num) for num in player1]
@@ -83,11 +81,6 @@ def part02(player1_deck, player2_deck):
         itr += card * (ind+1)
     return 'Player {} won with a total of {}'.format(game_winner, itr)
 
-
-"""
-rules:
-Before dealing a card, if either deck has been in the same order as in a previous round, Player 1 wins
-"""
 
 print(part01(player1[:], player2[:]))
 print(part02(player1[:], player2[:]))
