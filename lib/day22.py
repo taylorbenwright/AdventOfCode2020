@@ -66,9 +66,9 @@ def part01(player1_deck, player2_deck):
         elif winner == 2:
             player2_deck.extend(round_cards)
 
-    winning_deck = list(reversed(player1_deck)) if len(player2_deck) == 0 else list(reversed(player2_deck))
+    game_deck = player1_deck if winner == 1 else player2_deck
     itr = 0
-    for ind, card in enumerate(winning_deck):
+    for ind, card in enumerate(game_deck[::-1]):
         itr += card * (ind+1)
     return 'Player {} won with a total of {}'.format(winner, itr)
 
