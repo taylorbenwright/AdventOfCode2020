@@ -59,27 +59,21 @@ def part01(player1_deck, player2_deck):
     while True:
         if len(player1_deck) == 0 or len(player2_deck) == 0:
             break
-        round_winner, round_cards = play_standard_round(player1_deck.pop(0), player2_deck.pop(0))
-        winner = round_winner
+        winner, round_cards = play_standard_round(player1_deck.pop(0), player2_deck.pop(0))
         if winner == 1:
             player1_deck.extend(round_cards)
         elif winner == 2:
             player2_deck.extend(round_cards)
-
     game_deck = player1_deck if winner == 1 else player2_deck
-    itr = 0
-    for ind, card in enumerate(game_deck[::-1]):
-        itr += card * (ind+1)
-    return 'Player {} won with a total of {}'.format(winner, itr)
+
+    return 'Player {} won with a total of {}'.format(winner, sum(card*(ind+1) for ind, card in enumerate(game_deck[::-1])))
 
 
 def part02(player1_deck, player2_deck):
     game_winner = play_recursive_game(player1_deck, player2_deck)
     game_deck = player1_deck if game_winner == 1 else player2_deck
-    itr = 0
-    for ind, card in enumerate(game_deck[::-1]):
-        itr += card * (ind+1)
-    return 'Player {} won with a total of {}'.format(game_winner, itr)
+
+    return 'Player {} won with a total of {}'.format(game_winner, sum(card*(ind+1) for ind, card in enumerate(game_deck[::-1])))
 
 
 print(part01(player1[:], player2[:]))
